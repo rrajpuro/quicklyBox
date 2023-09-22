@@ -9,3 +9,6 @@ run/images/**
 # Ignoring running dnsmasq config files
 run/dnsmasq/**
 !run/dnsmasq/*.md
+
+.vscode**
+.venv**
