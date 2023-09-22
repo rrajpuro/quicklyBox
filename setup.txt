@@ -1,0 +1,11 @@
+- Clone the Git repo
+- Install 'qemu-utils', 'cloud-init', 'cloud-image-utils'
+    - sudo apt install qemu-utils
+    - sudo apt install cloud-init
+    - sudo apt install cloud-image-utils
+- 
+
+# Start DHCP services for the bridge
+- sudo dnsmasq --conf-file=/home/eb2-2027/quickly/run/dnsmasq/snmbr1/snmbr1-dnsmasq.conf
+# Add a NAT iptable rule for traffic from the bridge
+- sudo iptables -t nat -A POSTROUTING -s 192.168.131.0/24 ! -d 192.168.131.0/24 -j MASQUERADE

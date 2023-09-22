@@ -1,0 +1,76 @@
+---
+- name: Create new Ubuntu linux virtual machines
+  hosts: localhost
+  gather_facts: false
+  become: true
+  vars:
+    vms:
+      - name: vm15
+        memory: 24576
+        vcpu: 4
+        capacity: 256
+        image_path: /home/eb2-2027/quickly/run/base/lunar-server-cloudimg-amd64-disk-kvm.img
+        interfaces:
+          - name: eth0
+            network: 'snmbr1'
+            # mac: 52:54:<coursenumber>:<coursenumber>:<bridgenumber>:<hostnumber>
+            # ipaddr: 192.168.<130+bridgenumber>.<hostnumber>
+            mac: '52:54:05:77:01:15'
+
+  tasks:
+    - name: Create vm specific directory
+      file:
+        path: '/home/eb2-2027/quickly/run/images/{{ item.name }}'
+        state: directory
+      loop: "{{ vms }}"
+
+    - name: Create main disk image
+      command:
+        cmd: > 
+          qemu-img create -F qcow2 
+          -b {{ item.image_path }} 
+          -f qcow2 /home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}.qcow2 
+          {{ item.capacity }}G
+      loop: "{{ vms }}"
+
+    - name: Create network configuration file
+      ansible.builtin.template:
+        src: ./templates/ubuntu-netconf.j2
+        dest: "/home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-netconf"
+      loop: "{{ vms }}"
+
+    - name: Create user configuration file
+      ansible.builtin.template:
+        src: ./templates/ubuntu-userconf.j2
+        dest: "/home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-userconf"
+      loop: "{{ vms }}"
+
+    - name: Create metadata configuration file
+      command: 'touch /home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-metadataconf'
+      loop: "{{ vms }}"
+
+    - name: Create seed disk image
+      command: >
+        cloud-localds -v 
+        /home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-seed.iso 
+        /home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-userconf 
+        /home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-metadataconf
+        --network-config=/home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-netconf 
+      loop: "{{ vms }}"
+
+    - name: Define vm from xml and set autostart
+      community.libvirt.virt:
+        command: define
+        xml: "{{ lookup('template', 'vm-install-ubuntu.xml.j2') }}"
+        autostart: true
+      loop: "{{ vms }}"
+
+    - name: start vm
+      community.libvirt.virt:
+        name: "{{ item.name }}"
+        state: running
+      loop: "{{ vms }}"
+
+    # - name: Starting VMs
+    #   ansible.builtin.pause:
+    #     seconds: 45

@@ -1,0 +1,12 @@
+# Configuration file for dnsmasq.
+server=8.8.8.8
+server=8.8.4.4
+strict-order
+except-interface=lo
+bind-dynamic
+interface={{ item.switch }}-ns
+dhcp-range={{ item.dhcp.start }},{{ item.dhcp.end }},{{ item.dhcp.mask }},12h
+dhcp-no-override
+dhcp-authoritative
+dhcp-lease-max=150
+dhcp-leasefile=/var/quickly/tenant/{{ item.subid[:2] }}/vpc-{{ item.subid[:4]}}/sub-{{ item.subid }}/{{ item.subid }}-dnsmasq.leases

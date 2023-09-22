@@ -1,0 +1,11 @@
+# Ignoring disk images for cloud images
+run/base/*.img
+!run/base/*.md
+
+# Ignoring running VM image, seed and config files
+run/images/**
+!run/images/*.md
+
+# Ignoring running dnsmasq config files
+run/dnsmasq/**
+!run/dnsmasq/*.md

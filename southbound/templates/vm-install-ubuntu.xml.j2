@@ -1,0 +1,43 @@
+<domain type='kvm'>
+  <name>{{ item.name }}</name>
+  <memory unit='MiB'>{{ item.memory }}</memory>
+  <vcpu placement='static'>{{ item.vcpu }}</vcpu>
+  <os>
+    <type arch='x86_64'>hvm</type>
+    <boot dev='hd'/>
+  </os>
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2'/>
+      <source file='/home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}.qcow2'/>
+      <target dev='vda' bus='virtio'/>
+    </disk>
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='raw'/>
+      <source file='/home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-seed.iso'/>
+      <target dev='vdb' bus='virtio'/>
+    </disk>
+    {% if item.interfaces is defined %}
+    {% for inf in item.interfaces %}
+    <interface type='bridge'>
+      <mac address='{{ inf.mac }}'/>
+      <source bridge='{{ inf.network }}'/>
+      <model type='virtio'/>
+    </interface>
+    {% endfor %}
+    {% endif %}
+    <serial type='pty'>
+      <source path='/dev/pts/7'/>
+      <target type='isa-serial' port='0'>
+        <model name='isa-serial'/>
+      </target>
+      <alias name='serial0'/>
+    </serial>
+    <console type='pty' tty='/dev/pts/7'>
+      <source path='/dev/pts/7'/>
+      <target type='serial' port='0'/>
+      <alias name='serial0'/>
+    </console>
+  </devices>
+</domain>
