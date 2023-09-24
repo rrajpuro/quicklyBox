@@ -26,7 +26,7 @@ dhcp-option=option:router,192.168.131.1
 dhcp-no-override
 dhcp-authoritative
 dhcp-lease-max=150
-dhcp-leasefile=/home/eb2-2027/quickly/run/dnsmasq/bridge01/bridge01-dnsmasq.leases
+dhcp-leasefile=/home/eb2-2027/quicklyBox/run/dnsmasq/bridge01/bridge01-dnsmasq.leases
 
 dhcp-host=52:54:05:77:01:02,192.168.131.2
 dhcp-host=52:54:05:77:01:03,192.168.131.3

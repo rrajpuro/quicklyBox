@@ -3,9 +3,29 @@
     - sudo apt install qemu-utils
     - sudo apt install cloud-init
     - sudo apt install cloud-image-utils
-- 
 
-# Start DHCP services for the bridge
-- sudo dnsmasq --conf-file=/home/eb2-2027/quickly/run/dnsmasq/snmbr1/snmbr1-dnsmasq.conf
-# Add a NAT iptable rule for traffic from the bridge
-- sudo iptables -t nat -A POSTROUTING -s 192.168.131.0/24 ! -d 192.168.131.0/24 -j MASQUERADE
+Installing ansible on ubuntu
+sudo apt install software-properties-common
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible
+
+sudo brctl addbr cctbr1
+
+# Start DHCP services for the bridge - CHANGE VALUES
+- sudo dnsmasq --conf-file=/home/eb2-2027/quicklyBox/run/dnsmasq/<bridge>/<bridge>-dnsmasq.conf
+
+# Add a NAT iptable rule for traffic from the bridge - CHANGE VALUES
+- sudo iptables -t nat -A POSTROUTING -s 192.168.xxx.0/24 ! -d 192.168.xxx.0/24 -j MASQUERADE
+
+ansible-galaxy collection install community.libvirt
+
+sudo apt install pkg-config
+sudo apt install libvirt-dev
+python3 -m pip install libvirt-python
+
+
+sudo -E python3 createBox.py
+"sudo" may not inherit your user's environment variables. 
+You may need to set environment variables explicitly in your script or 
+when using "sudo -E" to preserve your environment.
+

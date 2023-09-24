@@ -10,12 +10,12 @@
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
-      <source file='/home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}.qcow2'/>
+      <source file='/home/eb2-2027/quicklyBox/run/images/{{ item.name }}/{{ item.name }}.qcow2'/>
       <target dev='vda' bus='virtio'/>
     </disk>
     <disk type='file' device='disk'>
       <driver name='qemu' type='raw'/>
-      <source file='/home/eb2-2027/quickly/run/images/{{ item.name }}/{{ item.name }}-seed.iso'/>
+      <source file='/home/eb2-2027/quicklyBox/run/images/{{ item.name }}/{{ item.name }}-seed.iso'/>
       <target dev='vdb' bus='virtio'/>
     </disk>
     {% if item.interfaces is defined %}

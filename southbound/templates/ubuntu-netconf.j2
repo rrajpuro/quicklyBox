@@ -5,6 +5,6 @@ network:
     {{ inf.name }}:
       dhcp4: true
       match:
-        macaddress: {{ inf.mac }}
+        macaddress: "{{ inf.mac }}"
       set-name: {{ inf.name }}
 {% endfor %}

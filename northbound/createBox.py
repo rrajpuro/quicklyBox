@@ -1,8 +1,9 @@
 from ansible_runner import run
+import yaml
 
 # Define the path to the playbook file
 # Replace with your playbook path
-playbook_path = "../southbound/create-vm-ubuntu.yaml"
+playbook_path = "/home/eb2-2027/quicklyBox/southbound/create-vm-ubuntu.yaml"
 
 ''' ANSIBLE VARS EXAMPLE
   vars:
@@ -20,26 +21,27 @@ playbook_path = "../southbound/create-vm-ubuntu.yaml"
             mac: '52:54:05:47:01:15'
 '''
 
-# Define the number of VMs
-num_vms =  1 #27
-
 # Create an empty list to store VM data
 vms = []
 
+# Define the number of VMs
+num_vms =  5 #28
+
 # Generate data for each VM
-for i in range(1, num_vms + 1):
+# for i in range(5, num_vms + 1):
+for i in range(1, 28):
 
     vmdata = {
         "name": f"vm{i:03}",
         "capacity": 128,
-        "image_path": "/home/eb2-2027/quickly/run/base/lunar-server-cloudimg-amd64-disk-kvm.img",
+        "image_path": "/home/eb2-2027/quicklyBox/run/base/lunar-server-cloudimg-amd64-disk-kvm.img",
         "memory": 8192,
         "vcpu": 2,
         "interfaces": [
             {
-                # {:02X} specifies that you want to format the decimal number as a hexadecimal
+                # {:02x} specifies that you want to format the decimal number as a hexadecimal
                 # string with two digits, and any empty space will be filled with leading zeros.
-                "mac": f"52:54:05:47:01:{i:02X}",
+                "mac": f"52:54:05:47:01:{i:02x}",   #Device’s MAC address in the form xx:xx:xx:xx:xx:xx. Letters must be lowercase.
                 "name": "eth0",
                 "network": "cctbr1"
             }
@@ -47,21 +49,15 @@ for i in range(1, num_vms + 1):
     }
     vms.append(vmdata)
     
-# Define the variables as a dictionary
-variables = [
-    {"vms": vms},
-    # {"var2": "value2"},
-    # Add more variables as needed
-]
-
-# Iterate through the variables and create a list of dictionaries
-extra_vars = [{"vars": variable} for variable in variables]
+# with open("vars.yaml", 'w') as f:
+#     yaml.dump(vms, f)
+# exit(0)
 
 # Define the run options
 run_options = {
     "playbook": playbook_path,
     "quiet": False,  # Set to True if you want less output
-    "extra_vars": extra_vars,
+    "extravars": {"vms": vms},
 }
 
 try:
