@@ -43,7 +43,11 @@ for i in range(1, 28):
                 # string with two digits, and any empty space will be filled with leading zeros.
                 "mac": f"52:54:05:47:01:{i:02x}",   #Device’s MAC address in the form xx:xx:xx:xx:xx:xx. Letters must be lowercase.
                 "name": "eth0",
-                "network": "cctbr1"
+                # If using a custom dnsmasq service use bridge and configure dnsmasq service as defined in ./run/dnsmasq
+                "inftype" : "network",
+                # "inftype" : "bridge"
+                "network": "cctbr11-net"
+                
             }
         ]
     }

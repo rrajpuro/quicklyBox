@@ -50,5 +50,5 @@ use "sudo -E" to run playbooks instead of using become as the python packages ar
 
 
 ### Destroy and undefine all VMs
-virsh list | awk 'NR > 2 {print $2}' | xargs -n 1 virsh destroy
-virsh list --all | awk 'NR > 2 {print $2}' | xargs -n 1 virsh undefine
+virsh list | awk 'NR > 2 {print $2}' | xargs -n 1 -P 10 virsh destroy
+virsh list --all | awk 'NR > 2 {print $2}' | xargs -n 1 -P 10 virsh undefine
