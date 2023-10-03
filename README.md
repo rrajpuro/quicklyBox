@@ -8,10 +8,10 @@ A virtual machine manager based on libvirt
     - sudo apt install cloud-init
     - sudo apt install cloud-image-utils
 
-Installing ansible on ubuntu
-sudo apt install software-properties-common
-sudo add-apt-repository --yes --update ppa:ansible/ansible
-sudo apt install ansible
+- Installing ansible on ubuntu
+    - sudo apt install software-properties-common
+    - sudo add-apt-repository --yes --update ppa:ansible/ansible
+    - sudo apt install ansible
 
 ### Create Bridge device
 sudo brctl addbr cctbr1

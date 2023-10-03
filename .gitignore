@@ -10,5 +10,11 @@ run/images/**
 run/dnsmasq/**
 !run/dnsmasq/*.md
 
+# Ignoring running libvirt network config files
+run/libvirt-network/**
+!run/libvirt-network/default.xml
+!run/libvirt-network/template_network.xml
+!run/libvirt-network/*.md
+
 .vscode**
 .venv**
