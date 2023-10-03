@@ -40,6 +40,8 @@ sudo apt install pkg-config
 sudo apt install libvirt-dev
 python3 -m pip install libvirt-python
 
+python3 -m pip install lxml
+
 
 sudo -E python3 createBox.py
 "sudo" may not inherit your user's environment variables. 
