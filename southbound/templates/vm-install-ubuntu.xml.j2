@@ -20,9 +20,9 @@
     </disk>
     {% if item.interfaces is defined %}
     {% for inf in item.interfaces %}
-    <interface type='bridge'>
+    <interface type='{{ inf.inftype }}'>
       <mac address='{{ inf.mac }}'/>
-      <source bridge='{{ inf.network }}'/>
+      <source {{ inf.inftype }}='{{ inf.network }}'/>
       <model type='virtio'/>
     </interface>
     {% endfor %}
